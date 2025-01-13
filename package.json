@@ -5,7 +5,7 @@
   "scripts": {
     "test": "jest",
     "start": "npx parcel index.html",
-    "build-production": "npx parcel build index.html",
+    "build": "parcel build index.html",
     "watch-jest": "jest --watch"
   },
   "keywords": [
