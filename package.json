@@ -30,6 +30,7 @@
   "dependencies": {
     "@babel/preset-react": "^7.26.3",
     "@reduxjs/toolkit": "^2.4.0",
+    "lucide-react": "^0.484.0",
     "namste-react---lesson-code": "file:",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",

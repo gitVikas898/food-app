@@ -1,16 +1,23 @@
-export const Address = ()=>{
+export const Address = () => {
     return (
-        <div className="p-3 grid gap-2 ">
-            <div id="address" className="grid gap-2 p-6 bg-white shadow-lg ">
-                <h1 className="text-2xl text-slate-900">Delivery Address</h1>
-                <p className="text-gray-500">7793 Gangotri, Q7X5+C75, Vijaya Gardens Road, Vijaya Gardens, Baridih, Jamshedpur, Jharkhand 831017, India</p>
-            </div>
-            <div className="bg-white shadow-lg p-6 flex flex-col gap-8">
-                <h1 className="text-2xl text-slate-900">Choose Payment method</h1>
-                <div className="flex items-center justify-center">
-                    <button className="bg-green-500 w-full p-2 text-white font-semibold">PROCEED TO PAY</button>
-                </div>
-            </div>
+      <div className="p-4 md:p-6 max-w-3xl mx-auto">
+        {/* Delivery Address */}
+        <div className="bg-white shadow-md rounded-lg p-6">
+          <h1 className="text-2xl font-bold text-gray-900 mb-2">Delivery Address</h1>
+          <p className="text-gray-600 leading-relaxed">
+            7793 Gangotri, Q7X5+C75, Vijaya Gardens Road, Vijaya Gardens, Baridih, Jamshedpur, Jharkhand 831017, India
+          </p>
         </div>
-    )
-}
+  
+        {/* Payment Section */}
+        <div className="mt-6 bg-white shadow-md rounded-lg p-6">
+          <h1 className="text-2xl font-bold text-gray-900 mb-4">Choose Payment Method</h1>
+  
+          <button className="w-full bg-green-600 hover:bg-green-700 text-white text-lg font-semibold py-3 rounded-md transition-all">
+            PROCEED TO PAY
+          </button>
+        </div>
+      </div>
+    );
+  };
+  

@@ -1,31 +1,42 @@
-import { useState } from "react";
-import down from "../utils/img/down.png"
-import up from "../utils/img/up.png"
+import { ChevronDown, ChevronUp } from 'lucide-react';
+import { Item } from './Item';
 
-import { Item } from "./Item.jsx";
+export const Accordion = ({ categoryData, showItems, setShowIndex }) => {
+  const handleClick = () => {
+    setShowIndex(showItems ? null : categoryData.id);
+  };
 
-export const Accordion = (props)=>{
+  return (
+    <div className="w-full max-w-2xl mx-auto overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm transition-all duration-200 hover:shadow-md">
+      <button
+        className="flex w-full items-center justify-between p-4 text-left transition-colors duration-200 hover:bg-gray-50"
+        onClick={handleClick}
+        aria-expanded={showItems}
+      >
+        <h2 className="text-lg font-semibold text-gray-900">
+          {categoryData.title}{' '}
+          <span className="ml-2 text-sm text-gray-500">
+            ({categoryData.itemCards.length})
+          </span>
+        </h2>
+        <span className="text-gray-500">
+          {showItems ? (
+            <ChevronUp className="h-5 w-5" />
+          ) : (
+            <ChevronDown className="h-5 w-5" />
+          )}
+        </span>
+      </button>
 
-    // const [showItems,setShowItems] = useState(true);
-
-    const handleClick = ()=>{
-       setShowIndex(showItems ? null : categoryData.id);
-    } 
-    const {categoryData,showItems,setShowIndex} = props;
-    return(
-       
-             <div className="border-y-[12px] boder-solid border-gray-100 rounded-lg grid gap-2 w-1/2">
-
-                <div id="header" className="flex items-center justify-between cursor-pointer p-2" onClick={handleClick}>
-                    <h1 className="font-bold text-gray-800">{categoryData.title} ({categoryData.itemCards.length})</h1>
-                    {showItems ? <span><img src={up} alt="uparrow" className="w-6 cursor-pointer"/></span> : <span><img src={down} alt="downarrow" className="w-8 cursor-pointer"/></span>}  
-                </div>
-
-                <div id="body" className={`transition-all duration-500 ${showItems ? "opacity-100 scale-100" :  "opacity-0 scale-75"}`}>
-
-                   { showItems && <Item item={categoryData.itemCards}  ></Item>}
-                </div>
-
-            </div>
-    )
-}
+      <div
+        className={`overflow-hidden transition-all duration-300 ease-in-out ${
+          showItems ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0'
+        }`}
+      >
+        <div className="p-4 pt-0">
+          <Item item={categoryData.itemCards} />
+        </div>
+      </div>
+    </div>
+  );
+};

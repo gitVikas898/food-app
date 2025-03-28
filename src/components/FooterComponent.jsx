@@ -1,70 +1,48 @@
-import { GOOGLE_URL,APPLE_PLAY } from "../utils/constants.js";
-import logo from "../utils/img/logo.png"
+import { GOOGLE_URL, APPLE_PLAY } from "../utils/constants.js";
+import logo from "../utils/img/logo.png";
+
 export const FooterComponent = () => {
-    return (
-      <div className=" text-white grid gap-8 p-4  bg-blue-500 w-full">
-        <div className=" p-5 flex gap-2 items-center justify-center ">
-          <h1 className="text-3xl font-bold">For better experience,download the Myfood app now</h1>
-          <img
-            className="w-24"
-            src={GOOGLE_URL}
-          ></img>
-          <img
-            className="w-24"
-            src={APPLE_PLAY}
-          ></img>
-        </div>
-        <div className="text-white grid grid-cols-6 gap-5">
-          <div className=" p-4 flex flex-col items-center justify-center">
-            <img
-              src={logo}
-              className="w-24"
-            ></img>
-            <p>©2024 Myfood limited</p>
-          </div>
-          <div className=" p-4 ">
-            <h1>Company</h1>
-            <ul>
-              <li>About Us</li>
-              <li>Careers</li>
-              <li>Team</li>
-            </ul>
-          </div>
-          <div className=" p-4 ">
-            <h1>Contact Us</h1>
-            <ul>
-              <li>Help & Support</li>
-              <li>Partner with us</li>
-              <li>Ride with us</li>
-            </ul>
-          </div>
-          <div className=" p-4 ">
-            <h1>Legal</h1>
-            <ul>
-              <li>Cookie Policy</li>
-              <li>Privacy Policy</li>
-              <li>Investor Relations</li>
-            </ul>
-          </div>
-          <div className=" p-4 ">
-            <h1>Available in:</h1>
-            <ul>
-              <li>Bangalore</li>
-              <li>Delhi</li>
-              <li>Chennai</li>
-            </ul>
-          </div>
-  
-          <div className=" p-4 ">
-            <h1>Social Links</h1>
-            <ul>
-              <li>Linked In</li>
-              <li>X</li>
-              <li>Instagram</li>
-            </ul>
-          </div>
+  return (
+    <footer className="bg-[#1E3A8A] text-white p-6 w-full">
+      {/* Top Section */}
+      <div className="flex flex-col md:flex-row items-center justify-between gap-4 p-4 border-b border-gray-400">
+        <h1 className="text-center md:text-left text-xl md:text-2xl font-semibold">
+          For a better experience, download the MyFood app now!
+        </h1>
+        <div className="flex gap-4">
+          <img className="w-32 cursor-pointer hover:scale-105 transition" src={GOOGLE_URL} alt="Google Play" />
+          <img className="w-32 cursor-pointer hover:scale-105 transition" src={APPLE_PLAY} alt="Apple Store" />
         </div>
       </div>
-    );
-  };
-  
+
+      {/* Footer Grid */}
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 mt-6">
+        {/* Logo Section */}
+        <div className="flex flex-col items-center text-center">
+          <img src={logo} className="w-20" alt="MyFood Logo" />
+          <p className="text-sm opacity-75 mt-2">© 2024 MyFood Limited</p>
+        </div>
+
+        {/* Footer Links */}
+        {[
+          { title: "Company", links: ["About Us", "Careers", "Team"] },
+          { title: "Contact Us", links: ["Help & Support", "Partner with us", "Ride with us"] },
+          { title: "Legal", links: ["Cookie Policy", "Privacy Policy", "Investor Relations"] },
+          { title: "Available in:", links: ["Bangalore", "Delhi", "Chennai"] },
+          { title: "Social Links", links: ["LinkedIn", "X", "Instagram"] },
+        ].map((section, index) => (
+          <div key={index}>
+            <h2 className="text-lg font-semibold mb-2">{section.title}</h2>
+            <ul className="space-y-1 text-sm opacity-90">
+              {section.links.map((link, idx) => (
+                <li key={idx} className="hover:text-gray-300 cursor-pointer transition">
+                  {link}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </footer>
+  );
+};

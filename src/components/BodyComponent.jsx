@@ -6,12 +6,12 @@ import { MAIN_RESTAURANTS_API } from "../utils/constants.js";
 import { useOnlineStatus } from "../utils/useOnlineStatus.js";
 
 export const BodyComponent = () => {
-
-
-  let [listOfRestaurant, setList] = useState([]);
-  let [filteredRestaurant, setFilteredRestaurant] = useState([]);
+  const [listOfRestaurant, setList] = useState([]);
+  const [filteredRestaurant, setFilteredRestaurant] = useState([]);
+  const [searchText, setSearchText] = useState("");
 
   const LabelVeg = withLabelVeg(ResCard);
+  const status = useOnlineStatus();
 
   useEffect(() => {
     fetchData();
@@ -19,116 +19,95 @@ export const BodyComponent = () => {
 
   const fetchData = async () => {
     const data = await fetch(MAIN_RESTAURANTS_API);
-
     const response = await data.json();
-
-    
-
     const restaurants =
       response?.data?.cards?.[1]?.card?.card?.gridElements?.infoWithStyle
         ?.restaurants || [];
+    const restaurantInfo = restaurants.map((restaurant) => restaurant.info) || [];
 
-    const restaurantInfo =
-      restaurants.map((restaurant) => restaurant.info) || [];
-
-  
     setList(restaurantInfo);
     setFilteredRestaurant(restaurantInfo);
   };
 
-  let [searchText, setSearchText] = useState("");
-
-  const status = useOnlineStatus();
-
-  if (status === false)
+  if (!status) {
     return (
-      <div>
-        <h1>
-          Looks Like You are Not Connected to the Internet, Please Check your
-          connection!
+      <div className="flex items-center justify-center min-h-screen text-center">
+        <h1 className="text-xl font-semibold text-red-600">
+          Looks like you're not connected to the Internet. Please check your connection!
         </h1>
       </div>
     );
+  }
 
   return listOfRestaurant.length === 0 ? (
-    <Shimmer></Shimmer>
+    <div>
+      <Shimmer />
+    </div>
   ) : (
-    <div className=" p-4  grid gap-6">
-      <div className=" p-2 flex justify-around">
-        <div className="flex items-center gap-3">
+    <div className="pt-24  pb-24 max-w-7xl mx-auto">
+      {/* Filters and Search */}
+      <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
+        {/* Filter Buttons */}
+        <div className="flex flex-wrap gap-3">
           <button
-            className="bg-orange-400 px-3 py-3 text-white rounded-md cursor-pointer"
+            className="bg-orange-500 px-4 py-2 text-white rounded-lg shadow-md hover:bg-orange-600 transition"
             onClick={() => {
-              const filteredList = listOfRestaurant.filter(
-                (res) => res.avgRating > 4
-              );
-              setFilteredRestaurant(filteredList);
+              setFilteredRestaurant(listOfRestaurant.filter((res) => res.avgRating > 4));
             }}
           >
-            Top Rated{" "}
+            ⭐ Top Rated
           </button>
-
           <button
-            className="bg-green-600 p-3 rounded-md text-white cursor-pointer"
+            className="bg-green-600 px-4 py-2 text-white rounded-lg shadow-md hover:bg-green-700 transition"
             onClick={() => {
-              const vegItems = listOfRestaurant.filter((res) => res.veg);
-              setFilteredRestaurant(vegItems);
+              setFilteredRestaurant(listOfRestaurant.filter((res) => res.veg));
             }}
           >
-            Veg Only
+            🥦 Veg Only
           </button>
-
           <button
-            className="bg-blue-400 p-3 rounded-md text-white cursor-pointer"
+            className="bg-blue-500 px-4 py-2 text-white rounded-lg shadow-md hover:bg-blue-600 transition"
             onClick={() => {
-              const quickItems = listOfRestaurant.filter(
-                (res) => res?.sla?.deliveryTime <= 30
+              setFilteredRestaurant(
+                listOfRestaurant.filter((res) => res?.sla?.deliveryTime <= 30)
               );
-              setFilteredRestaurant(quickItems);
             }}
           >
-            Near Me
+            📍 Near Me
           </button>
         </div>
 
-        <div className="flex w-1/2">
+        {/* Search Bar */}
+        <div className="flex w-full md:w-1/2">
           <input
             type="text"
-            className="border-gray-300 flex-1 border border-solid w-full rounded-l-full outline-none px-6 text-gray-500"
-            id="s-input"
+            className="flex-1 border border-gray-300 rounded-l-full px-4 py-2 text-gray-600 focus:ring focus:ring-orange-300"
             value={searchText}
-            onChange={(e) => {
-              setSearchText(e.target.value);
-            }}
-          ></input>
+            onChange={(e) => setSearchText(e.target.value)}
+            placeholder="Search restaurants..."
+          />
           <button
-            role="button"
-            aria-label="Search"
-            className="bg-orange-500 p-4 text-white rounded-r-full"
+            className="bg-orange-500 px-6 py-2 text-white rounded-r-full hover:bg-orange-600 transition"
             onClick={() => {
               const trimmedSearchText = searchText.trim().toLowerCase();
-              const searcResult = listOfRestaurant.filter(
-                (res) =>
-                  res.name && res.name.toLowerCase().includes(trimmedSearchText)
+              setFilteredRestaurant(
+                listOfRestaurant.filter(
+                  (res) => res.name && res.name.toLowerCase().includes(trimmedSearchText)
+                )
               );
-              setFilteredRestaurant(searcResult);
-              setFilteredRestaurant(searcResult);
             }}
           >
-            Search
+            🔍 Search
           </button>
         </div>
       </div>
 
-      <div className="p-4  grid grid-cols-4 gap-4">
+      {/* Restaurant Cards Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {filteredRestaurant.map((restaurant) => (
-          <Link
-            key={restaurant.id}
-            to={"/restaurants/" + restaurant.id}
-            className="res-text"
-          >
+          <Link key={restaurant.id} to={`/restaurants/${restaurant.id}`}>
             {restaurant.veg ? (
-              <LabelVeg resData={restaurant}></LabelVeg>
+              <LabelVeg resData={restaurant} />
             ) : (
               <ResCard resData={restaurant} />
             )}
