@@ -81,7 +81,7 @@ export const BodyComponent = () => {
         <div className="flex w-full md:w-1/2">
           <input
             type="text"
-            className="flex-1 border border-gray-300 rounded-l-full px-4 py-2 text-gray-600 focus:ring focus:ring-orange-300"
+            className="flex-1 border border-gray-300 rounded-l-full px-4 py-2 text-gray-600 outline-none focus:ring focus:ring-orange-300"
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
             placeholder="Search restaurants..."
